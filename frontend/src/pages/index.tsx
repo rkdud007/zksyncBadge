@@ -34,11 +34,15 @@ let contract_data = {
 export default function Home() {
   const { address, isConnected } = useAccount();
   const [result, setResult] = useState("");
+  const [proof, setProof] = useState();
 
   const clickGenerateProof = async () => {
     //generate proof of token number 16
     await handleGenerateProof(address as string, 16);
     console.log("clickGenerateProof");
+    const item: any = localStorage.getItem("proofs");
+    const data = JSON.parse(item as string);
+    setProof(data[16][1]);
   };
 
   const clickVerifyProof = async () => {
@@ -76,6 +80,16 @@ export default function Home() {
           <div className={styles.proofbutton} onClick={clickGenerateProof}>
             Generate Proof of Latest Block for NFT #16 Ownership
           </div>
+        )}
+      </div>
+      <div>
+        {proof && (
+          <>
+            <div>BlockNumber {proof.block_number}</div>
+            <div>Storage Slot {proof.slot}</div>
+            <div>Contract {proof.contract}</div>
+            <div>Proof {proof.proof}</div>
+          </>
         )}
       </div>
       <br />
